@@ -96,7 +96,6 @@ return {
 };
 
 function exec(method, params) {
-    Console.WriteLine(JSONUtils.jsonStringify(params));
     if (params) {
         var requestEntity = new StringRequestEntity(JSONUtils.jsonStringify(params), "application/json", "UTF-8");
         method.setRequestEntity(requestEntity);
