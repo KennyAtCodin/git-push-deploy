@@ -34,7 +34,7 @@ if (IS_GITHUB) {
 }
 
 //Get list of hooks
-var gitApiUrl = IS_GITHUB ? "https://api." + domain + "/repos/" + user + "/" + repo + "/hooks" : "https://" + domain + "/api/v4/projects/" + user + "%2F" + repo + "/hooks";
+var gitApiUrl = IS_GITHUB ? "https://api." + domain + "/repos/" + user + "/" + repo + "/hooks" : "https://" + domain + "/api/v4/projects/" + repo + "/hooks";
 var get = new GetMethod(gitApiUrl);
 //Authentication for GitLab
 if (!IS_GITHUB) get.addRequestHeader("PRIVATE-TOKEN", token);
