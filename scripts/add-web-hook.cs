@@ -116,7 +116,7 @@ function exec(method, params) {
         if (status == 401) error = "Wrong username or/and token. Please, double check your entries.";
         result = status;
         type = "error";
-        response = null;
+        response = JSONUtils.jsonStringify(params);
     }
     method.releaseConnection();
     return {
