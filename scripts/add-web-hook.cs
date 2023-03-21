@@ -24,7 +24,7 @@ if (repo.indexOf("/") > -1) {
     domain = arr.pop() || domain;
 }
 
-
+var IS_GITHUB = domain.indexOf("github.com") != -1;
 
 //Get list of hooks
 var gitApiUrl =  "https://" + domain + "/api/v4/projects/" + repo + "/hooks";
