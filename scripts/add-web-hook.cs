@@ -41,7 +41,7 @@ var params =  {
 };
 
 //Authentication for GitLab
-if (!IS_GITHUB) post.addRequestHeader("PRIVATE-TOKEN", token);
+post.addRequestHeader("PRIVATE-TOKEN", token);
 
 resp = exec(post, params);
 if (resp.result != 0) return resp;
