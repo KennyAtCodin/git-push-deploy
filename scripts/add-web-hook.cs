@@ -24,60 +24,17 @@ if (repo.indexOf("/") > -1) {
     domain = arr.pop() || domain;
 }
 
-var IS_GITHUB = domain.indexOf("github.com") != -1;
 
-//Authentication for GitHub
-if (IS_GITHUB) {
-    var creds = new UsernamePasswordCredentials(user, token);
-    client.getParams().setAuthenticationPreemptive(true);
-    client.getState().setCredentials(AuthScope.ANY, creds);
-}
 
 //Get list of hooks
-var gitApiUrl = IS_GITHUB ? "https://api." + domain + "/repos/" + user + "/" + repo + "/hooks" : "https://" + domain + "/api/v4/projects/" + repo + "/hooks";
-var get = new GetMethod(gitApiUrl);
-//Authentication for GitLab
-if (!IS_GITHUB) get.addRequestHeader("PRIVATE-TOKEN", token);
-
-var resp = exec(get);
-if (resp.result != 0) return resp;
-var hooks = eval("(" + resp.response + ")");
-
-//Clear previous hooks
-for (var i = 0; i < hooks.length; i++) {
-    var url = IS_GITHUB ? hooks[i].config.url : hooks[i].url;
-    if (url && url.indexOf(envName + '-' + scriptName) != -1) {
-        var del = new DeleteMethod(gitApiUrl + "/" + hooks[i].id);
-        //Authentication for GitLab
-        if (!IS_GITHUB) del.addRequestHeader("PRIVATE-TOKEN", token);
-
-        resp = exec(del);
-        if (resp.result != 0 && resp.result != 204) return resp;
-    }
-}
-
-
-var action = getParam('act');
-if (action == 'delete' || action == 'clean') {
-    return {
-        result: 0
-    };
-}
+var gitApiUrl =  "https://" + domain + "/api/v4/projects/" + repo + "/hooks";
 
 //Create a new hook
 var post = new PostMethod(gitApiUrl);
 
 
 //Hook request params
-var params = IS_GITHUB ? {
-    "name": "web",
-    "active": true,
-    "events": ["push", "pull_request"],
-    "config": {
-        "url": callbackUrl,
-        "content_type": "json"
-    }
-} : {
+var params =  {
     "push_events": true,
     "merge_requests_events": true,
     "url": callbackUrl
